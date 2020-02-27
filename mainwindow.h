@@ -2,20 +2,37 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
+#include <QTime>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
+#include "httpmanager.h"
+
+namespace Ui {
+class MainWindow;
+}
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+private slots:
+    void setCurrentTime();
+    void processImage(QPixmap *);
+    void processWeatherJson(QJsonObject *json);
+
+    void on_imageDownloadButton_clicked();
+
+    void on_weatherDownloadButton_clicked();
 
 private:
     Ui::MainWindow *ui;
+    QTimer *timer;
+    HTTPManager *httpManager;
+
 };
+
 #endif // MAINWINDOW_H
