@@ -20,13 +20,14 @@ public:
     ~MainWindow();
 
 private slots:
-    void setCurrentTime();
-    void processImage(QPixmap *);
-    void processWeatherJson(QJsonObject *json);
+//    void setCurrentTime();
+//    void processImage(QPixmap *);
+      void processStockJson(QJsonObject *json);
 
-    void on_imageDownloadButton_clicked();
+//    void on_imageDownloadButton_clicked();
+//    void on_stockDownloadButton_clicked();
 
-    void on_weatherDownloadButton_clicked();
+    void on_stockDown_clicked();
 
 private:
     Ui::MainWindow *ui;

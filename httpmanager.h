@@ -5,6 +5,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QPixmap>
+#include "sensitiveinfohandler.h"
 
 class HTTPManager : public QObject
 {
@@ -14,19 +15,21 @@ public:
     ~HTTPManager();
 
     void sendImageRequest(QString zip);
-    void sendWeatherRequest(QString zip);
+    void sendStockRequest(QString SymOne);
+    const SensitiveInfoHandler SECRETS;
 
 signals:
     void ImageReady(QPixmap *image);
-    void WeatherJsonReady(QJsonObject *json);
+    void StockJsonReady(QJsonObject *json);
 
 private slots:
     void ImageDownloadedHandler(QNetworkReply *reply);
-    void WeatherDownloadedHandler(QNetworkReply *reply);
+    void StockDownloadedHandler(QNetworkReply *reply);
 
 private:
     QNetworkAccessManager *imageDownloadManager;
-    QNetworkAccessManager *weatherAPIManager;
+    QNetworkAccessManager *stockAPIManager;
+
     QByteArray downloadedData;
 };
 

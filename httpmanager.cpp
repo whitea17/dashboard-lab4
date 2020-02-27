@@ -2,22 +2,23 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+
 HTTPManager::HTTPManager(QObject *parent) :
     QObject(parent),
     imageDownloadManager(new QNetworkAccessManager),
-    weatherAPIManager(new QNetworkAccessManager)
+    stockAPIManager(new QNetworkAccessManager)
 {
     connect(imageDownloadManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(ImageDownloadedHandler(QNetworkReply*)));
 
-    connect(weatherAPIManager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(WeatherDownloadedHandler(QNetworkReply*)));
+    connect(stockAPIManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(StockDownloadedHandler(QNetworkReply*)));
 }
 
 HTTPManager::~HTTPManager()
 {
     delete imageDownloadManager;
-    delete weatherAPIManager;
+    delete stockAPIManager;
 }
 
 void HTTPManager::sendImageRequest(QString zip)
@@ -33,18 +34,18 @@ void HTTPManager::sendImageRequest(QString zip)
     qDebug() << "Image Request Sent to Address " << request.url();
 }
 
-void HTTPManager::sendWeatherRequest(QString zip)
+void HTTPManager::sendStockRequest(QString SymOne)
 {
     QNetworkRequest request;
 
-    // use your own key for weather api!
-    QString address = "https://api.openweathermap.org/data/2.5/weather?zip="
-            + zip
-            + ",us&units=imperial&appid=23c40d0d9c1dc455530753d9f2213917";
+    QString address = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol="
+            + SymOne
+            + "&apikey="
+            + SECRETS.STOCK_API_KEY;
 
     request.setUrl(QUrl(address));
-    weatherAPIManager->get(request);
-    qDebug() << "Weather Request Sent to Address " << request.url();
+    stockAPIManager->get(request);
+    qDebug() << "Stock Request Sent to Address " << request.url();
 }
 
 void HTTPManager::ImageDownloadedHandler(QNetworkReply *reply)
@@ -63,9 +64,9 @@ void HTTPManager::ImageDownloadedHandler(QNetworkReply *reply)
     emit ImageReady(image);
 }
 
-void HTTPManager::WeatherDownloadedHandler(QNetworkReply *reply)
+void HTTPManager::StockDownloadedHandler(QNetworkReply *reply)
 {
-    qDebug() << "Weather Reply has arrived";
+    qDebug() << "Stock Reply has arrived";
     if (reply->error()) {
         qDebug() << reply->errorString();
         return;
@@ -79,5 +80,5 @@ void HTTPManager::WeatherDownloadedHandler(QNetworkReply *reply)
     QJsonDocument jsonResponse = QJsonDocument::fromJson(answer.toUtf8());
     QJsonObject *jsonObj = new QJsonObject(jsonResponse.object());
 
-    emit WeatherJsonReady(jsonObj);
+    emit StockJsonReady(jsonObj);
 }
