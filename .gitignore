@@ -1,3 +1,5 @@
+# Secrets
+sensitiveinfohandler.h
 # C++ objects and libs
 *.slo
 *.lo
