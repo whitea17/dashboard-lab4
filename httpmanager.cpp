@@ -7,7 +7,8 @@ HTTPManager::HTTPManager(QObject *parent) :
     QObject(parent),
     imageDownloadManager(new QNetworkAccessManager),
     stockAPIManager(new QNetworkAccessManager),
-    stockTwoAPIManager(new QNetworkAccessManager)
+    stockTwoAPIManager(new QNetworkAccessManager),
+    memeLinkAPIManager(new QNetworkAccessManager)
 
 {
     connect(imageDownloadManager, SIGNAL(finished(QNetworkReply*)),
@@ -18,6 +19,9 @@ HTTPManager::HTTPManager(QObject *parent) :
 
     connect(stockTwoAPIManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(StockTwoDownloadedHandler(QNetworkReply*)));
+
+    connect(memeLinkAPIManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(MemeLinkDownloadedHandler(QNetworkReply*)));
 }
 
 HTTPManager::~HTTPManager()
@@ -25,18 +29,17 @@ HTTPManager::~HTTPManager()
     delete imageDownloadManager;
     delete stockAPIManager;
     delete stockTwoAPIManager;
+    delete memeLinkAPIManager;
+
 
 }
 
-void HTTPManager::sendImageRequest(QString zip)
+void HTTPManager::sendImageRequest(QString link)
 {
     QNetworkRequest request;
 
-    // use your key for bing map api!
-    QString address = "https://dev.virtualearth.net/REST/V1/Imagery/Map/AerialWithLabels/"
-            + zip
-            + "/7?mapSize=400,200&mapLayer=TrafficFlow&format=png&key=AuGr51cDnR0CotgpcjsFPnIun9_0A_gj0eCx_mdxTxsDQ1XY-CNwY_wKukV118Pa";
-    request.setUrl(QUrl(address));
+
+    request.setUrl(QUrl(link));
     imageDownloadManager->get(request);
     qDebug() << "Image Request Sent to Address " << request.url();
 }
@@ -66,6 +69,18 @@ void HTTPManager::sendStockRequestTwo(QString SymOne)
 
     request.setUrl(QUrl(address));
     stockTwoAPIManager->get(request);
+    qDebug() << "Stock Request Sent to Address " << request.url();
+}
+
+// Shout-out to Dev Daksan who created this api, https://github.com/R3l3ntl3ss/Meme_Api
+void HTTPManager::sendMemeLinkRequest()
+{
+    QNetworkRequest request;
+
+    QString address = "https://meme-api.herokuapp.com/gimme";
+
+    request.setUrl(QUrl(address));
+    memeLinkAPIManager->get(request);
     qDebug() << "Stock Request Sent to Address " << request.url();
 }
 
@@ -122,4 +137,23 @@ void HTTPManager::StockTwoDownloadedHandler(QNetworkReply *reply)
     QJsonObject *jsonObj = new QJsonObject(jsonResponse.object());
 
     emit StockTwoJsonReady(jsonObj);
+}
+
+void HTTPManager::MemeLinkDownloadedHandler(QNetworkReply *reply)
+{
+    qDebug() << "Stock Reply has arrived";
+    if (reply->error()) {
+        qDebug() << reply->errorString();
+        return;
+    }
+
+    qDebug() << "Download was successful";
+
+    QString answer = reply->readAll();
+    reply->deleteLater();
+
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(answer.toUtf8());
+    QJsonObject *jsonObj = new QJsonObject(jsonResponse.object());
+
+    emit MemeLinkJsonReady(jsonObj);
 }

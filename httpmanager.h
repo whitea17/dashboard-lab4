@@ -14,28 +14,31 @@ public:
     explicit HTTPManager(QObject *parent = nullptr);
     ~HTTPManager();
 
-    void sendImageRequest(QString zip);
+    void sendImageRequest(QString link);
     void sendStockRequest(QString SymOne);
     void sendStockRequestTwo(QString SymOne);
+    void sendMemeLinkRequest();
 
     const SensitiveInfoHandler SECRETS;
-    const SensitiveInfoHandler SECRETS2;
 
 
 signals:
     void ImageReady(QPixmap *image);
     void StockJsonReady(QJsonObject *json);
     void StockTwoJsonReady(QJsonObject *json);
+    void MemeLinkJsonReady(QJsonObject *json);
 
 private slots:
     void ImageDownloadedHandler(QNetworkReply *reply);
     void StockDownloadedHandler(QNetworkReply *reply);
     void StockTwoDownloadedHandler(QNetworkReply *reply);
+    void MemeLinkDownloadedHandler(QNetworkReply *reply);
 
 private:
     QNetworkAccessManager *imageDownloadManager;
     QNetworkAccessManager *stockAPIManager;
     QNetworkAccessManager *stockTwoAPIManager;
+    QNetworkAccessManager *memeLinkAPIManager;
 
     QByteArray downloadedData;
 };

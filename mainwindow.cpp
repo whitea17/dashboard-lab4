@@ -12,20 +12,23 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-//    connect(timer, SIGNAL(timeout()),
-//            this, SLOT(setCurrentTime()));
+    connect(timer, SIGNAL(timeout()),
+            this, SLOT(setCurrentTime()));
 
 //    setCurrentTime();
 //    timer->start(1000);
 
-//    connect(httpManager, SIGNAL(ImageReady(QPixmap *)),
-//            this, SLOT(processImage(QPixmap *)));
+    connect(httpManager, SIGNAL(ImageReady(QPixmap *)),
+            this, SLOT(processImage(QPixmap *)));
 
     connect(httpManager, SIGNAL(StockJsonReady(QJsonObject *)),
             this, SLOT(processStockJson(QJsonObject *)));
 
     connect(httpManager, SIGNAL(StockTwoJsonReady(QJsonObject *)),
             this, SLOT(processStockTwoJson(QJsonObject *)));
+
+    connect(httpManager, SIGNAL(MemeLinkJsonReady(QJsonObject *)),
+            this, SLOT(processMemeLinkJson(QJsonObject *)));
 }
 
 MainWindow::~MainWindow()
@@ -45,10 +48,11 @@ MainWindow::~MainWindow()
 //    ui->secondLCD->display(second);
 //}
 
-//void MainWindow::processImage(QPixmap *image)
-//{
-//    ui->imageLabel->setPixmap(*image);
-//}
+void MainWindow::processImage(QPixmap *image)
+{
+
+    ui->imageBox->setPixmap(*image);
+}
 
 void MainWindow::processStockJson(QJsonObject *json)
 {
@@ -134,12 +138,20 @@ void MainWindow::processStockTwoJson(QJsonObject *json)
 
 }
 
-//void MainWindow::on_imageDownloadButton_clicked()
-//{
-//    QString zip = ui->zipCodeEdit->text();
-//    qDebug() << zip;
-//    httpManager->sendImageRequest(zip);
-//}
+void MainWindow::processMemeLinkJson(QJsonObject *json)
+{
+    qDebug() << "Json ready";
+    qDebug() << json;
+    QJsonValue memeUrl = json->value("url");
+
+    qDebug() << memeUrl;
+
+    httpManager->sendImageRequest(memeUrl.toString());
+
+    // {"postLink":"https://redd.it/faf0dr","subreddit":"dankmemes","title":"Time to commit aliven't","url":"https://i.redd.it/gouzx46ayhj41.jpg"}
+
+}
+
 
 
 void MainWindow::on_stockDown_clicked()
@@ -150,4 +162,9 @@ void MainWindow::on_stockDown_clicked()
     httpManager->sendStockRequest(sym);
     httpManager->sendStockRequestTwo("NVDA");
 
+}
+
+void MainWindow::on_imgDown_clicked()
+{
+    httpManager->sendMemeLinkRequest();
 }
