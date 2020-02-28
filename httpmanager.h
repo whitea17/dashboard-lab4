@@ -19,6 +19,7 @@ public:
     void sendStockRequestTwo(QString SymOne);
     void sendMemeLinkRequest();
     void mapsRequest(QString fromZip, QString toZips);
+    void sendPushBulletRequest(QString data);
 
     const SensitiveInfoHandler SECRETS;
 
@@ -29,6 +30,7 @@ signals:
     void StockTwoJsonReady(QJsonObject *json);
     void MemeLinkJsonReady(QJsonObject *json);
     void MapsJsonReady(QJsonObject *json);
+    void PushBulletJsonReady(QJsonObject *json);
 
 private slots:
     void ImageDownloadedHandler(QNetworkReply *reply);
@@ -36,6 +38,7 @@ private slots:
     void StockTwoDownloadedHandler(QNetworkReply *reply);
     void MemeLinkDownloadedHandler(QNetworkReply *reply);
     void MapsDownloadedHandler(QNetworkReply *reply);
+    void PushBulletDownloadedHandler(QNetworkReply *reply);
 
 private:
     QNetworkAccessManager *imageDownloadManager;
@@ -43,6 +46,7 @@ private:
     QNetworkAccessManager *stockTwoAPIManager;
     QNetworkAccessManager *memeLinkAPIManager;
     QNetworkAccessManager *mapsAPIManager;
+    QNetworkAccessManager *pushBulletAPIManager;
 
     QByteArray downloadedData;
 };

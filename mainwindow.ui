@@ -183,9 +183,9 @@ border-radius: 45px;</string>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>250</y>
+      <y>420</y>
       <width>351</width>
-      <height>471</height>
+      <height>301</height>
      </rect>
     </property>
     <property name="text">
@@ -199,7 +199,7 @@ border-radius: 45px;</string>
     <property name="geometry">
      <rect>
       <x>300</x>
-      <y>220</y>
+      <y>390</y>
       <width>89</width>
       <height>25</height>
      </rect>
@@ -245,6 +245,29 @@ border-radius: 45px;</string>
     </property>
     <property name="text">
      <string>PushButton</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="pushBullMsg">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>230</y>
+      <width>151</width>
+      <height>25</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushBullSendButton">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>230</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Send</string>
     </property>
    </widget>
   </widget>

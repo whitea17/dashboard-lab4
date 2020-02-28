@@ -9,7 +9,9 @@ HTTPManager::HTTPManager(QObject *parent) :
     stockAPIManager(new QNetworkAccessManager),
     stockTwoAPIManager(new QNetworkAccessManager),
     memeLinkAPIManager(new QNetworkAccessManager),
-    mapsAPIManager(new QNetworkAccessManager)
+    mapsAPIManager(new QNetworkAccessManager),
+    pushBulletAPIManager(new QNetworkAccessManager)
+
 
 {
     connect(imageDownloadManager, SIGNAL(finished(QNetworkReply*)),
@@ -27,6 +29,9 @@ HTTPManager::HTTPManager(QObject *parent) :
     connect(mapsAPIManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(MapsDownloadedHandler(QNetworkReply*)));
 
+    connect(pushBulletAPIManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(PushBulletDownloadedHandler(QNetworkReply*)));
+
 }
 
 HTTPManager::~HTTPManager()
@@ -36,6 +41,8 @@ HTTPManager::~HTTPManager()
     delete stockTwoAPIManager;
     delete memeLinkAPIManager;
     delete mapsAPIManager;
+    delete pushBulletAPIManager;
+
 
 
 }
@@ -101,6 +108,33 @@ void HTTPManager::mapsRequest(QString fromZip, QString toZip)
     qDebug() << "Stock Request Sent to Address " << request.url();
 }
 
+void HTTPManager::sendPushBulletRequest(QString data)
+{
+    QNetworkRequest request;
+
+    QString address = "https://api.pushbullet.com/v2/pushes";
+    request.setUrl(QUrl(address));
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader("Access-Token", SECRETS.PUSHBULLET_API_KEY.toUtf8());
+
+
+
+
+    QJsonObject jsonData;
+    jsonData.insert("type", "note");
+    jsonData.insert("title", data.left(15));
+    jsonData.insert("body", data);
+
+    QJsonDocument tmp(jsonData);
+    QByteArray formatedData = tmp.toJson();
+
+    pushBulletAPIManager->post(request, formatedData);
+    qDebug() << "PushBullet Request Sent to Address " << request.url();
+}
+
+
+
 void HTTPManager::ImageDownloadedHandler(QNetworkReply *reply)
 {
     qDebug() << "Image Reply has arrived";
@@ -135,7 +169,6 @@ void HTTPManager::StockDownloadedHandler(QNetworkReply *reply)
 
     emit StockJsonReady(jsonObj);
 }
-
 
 void HTTPManager::StockTwoDownloadedHandler(QNetworkReply *reply)
 {
@@ -192,4 +225,23 @@ void HTTPManager::MapsDownloadedHandler(QNetworkReply *reply)
     QJsonObject *jsonObj = new QJsonObject(jsonResponse.object());
 
     emit MapsJsonReady(jsonObj);
+}
+
+void HTTPManager::PushBulletDownloadedHandler(QNetworkReply *reply)
+{
+    qDebug() << "Stock Reply has arrived";
+    if (reply->error()) {
+        qDebug() << reply->errorString();
+        return;
+    }
+
+    qDebug() << "Download was successful";
+
+    QString answer = reply->readAll();
+    reply->deleteLater();
+
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(answer.toUtf8());
+    QJsonObject *jsonObj = new QJsonObject(jsonResponse.object());
+
+    emit PushBulletJsonReady(jsonObj);
 }

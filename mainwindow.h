@@ -21,20 +21,18 @@ public:
 
 private slots:
 //    void setCurrentTime();
-      void processImage(QPixmap *);
-      void processStockJson(QJsonObject *json);
-      void processStockTwoJson(QJsonObject *json);
-      void processMemeLinkJson(QJsonObject *json);
-      void processMapsJson(QJsonObject *json);
-
-//    void on_imageDownloadButton_clicked();
-//    void on_stockDownloadButton_clicked();
+    void processImage(QPixmap *);
+    void processStockJson(QJsonObject *json);
+    void processStockTwoJson(QJsonObject *json);
+    void processMemeLinkJson(QJsonObject *json);
+    void processMapsJson(QJsonObject *json);
+    void processPushBulletJson(QJsonObject *json);
 
     void on_stockDown_clicked();
-
     void on_imgDown_clicked();
-
     void on_mapUpdate_clicked();
+
+    void on_pushBullSendButton_clicked();
 
 private:
     Ui::MainWindow *ui;

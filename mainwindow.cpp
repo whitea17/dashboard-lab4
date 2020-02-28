@@ -32,6 +32,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(httpManager, SIGNAL(MapsJsonReady(QJsonObject *)),
             this, SLOT(processMapsJson(QJsonObject *)));
+
+    connect(httpManager, SIGNAL(PushBulletJsonReady(QJsonObject *)),
+            this, SLOT(processPushBulletJson(QJsonObject *)));
 }
 
 MainWindow::~MainWindow()
@@ -191,6 +194,35 @@ void MainWindow::processMapsJson(QJsonObject *json)
 
 }
 
+void MainWindow::processPushBulletJson(QJsonObject *json)
+{
+    qDebug() << "Json ready";
+
+
+    qDebug() << json;
+
+
+//    {
+//        "active": true,
+//        "iden": "REDACTED",
+//        "created": 1582921781.1249077,
+//        "modified": 1582921781.1327956,
+//        "type": "note",
+//        "dismissed": false,
+//        "direction": "self",
+//        "sender_iden": "REDACTED",
+//        "sender_email": "REDACTED",
+//        "sender_email_normalized": "REDACTED",
+//        "sender_name": "REDACTED",
+//        "receiver_iden": "REDACTED",
+//        "receiver_email": "REDACTED",
+//        "receiver_email_normalized": "REDACTED",
+//        "title": "ahhhhhh",
+//        "body": "yeah boi!"
+//    }
+
+}
+
 
 void MainWindow::on_stockDown_clicked()
 {
@@ -212,4 +244,9 @@ void MainWindow::on_mapUpdate_clicked()
 
     httpManager->mapsRequest("98037", "98119");
 
+}
+
+void MainWindow::on_pushBullSendButton_clicked()
+{
+    httpManager->sendPushBulletRequest(ui->pushBullMsg->text());
 }
