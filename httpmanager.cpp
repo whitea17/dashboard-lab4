@@ -73,6 +73,7 @@ void HTTPManager::sendStockRequest(QString SymOne)
 
 void HTTPManager::sendStockRequestTwo(QString SymOne)
 {
+    qDebug() << SECRETS.STOCK_API_KEY;
     QNetworkRequest request;
 
     QString address = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol="

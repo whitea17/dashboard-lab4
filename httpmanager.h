@@ -21,7 +21,7 @@ public:
     void mapsRequest(QString fromZip, QString toZips);
     void sendPushBulletRequest(QString data);
 
-    const SensitiveInfoHandler SECRETS;
+    const SensitiveInfoHandler SECRETS = SensitiveInfoHandler();
 
 
 signals:

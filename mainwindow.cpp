@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(httpManager, SIGNAL(PushBulletJsonReady(QJsonObject *)),
             this, SLOT(processPushBulletJson(QJsonObject *)));
-    on_refreshButton_clicked();
+    //on_refreshButton_clicked();
 }
 
 MainWindow::~MainWindow()
@@ -77,7 +77,7 @@ void MainWindow::processStockJson(QJsonObject *json)
     ui->stockPrice1->setText("$ " + stockPrice);
     ui->stockPercent1->setText(stockPercentChange);
 
-    if(stockPercentChange.startsWith("-")){
+    if(stockPercentChange.length() > 0 && stockPercentChange.startsWith("-")){
         ui->stockPercent1->setStyleSheet("color: red;");
         ui->stockPrice1->setStyleSheet("color: red;");
     }else{
@@ -119,7 +119,7 @@ void MainWindow::processStockTwoJson(QJsonObject *json)
     ui->stockPrice1_2->setText("$ " + stockPrice);
     ui->stockPercent1_2->setText(stockPercentChange);
 
-    if(stockPercentChange.startsWith("-")){
+    if(stockPercentChange.length() > 0 && stockPercentChange.startsWith("-")){
         ui->stockPercent1_2->setStyleSheet("color: red;");
         ui->stockPrice1_2->setStyleSheet("color: red;");
     }else{
@@ -163,7 +163,7 @@ void MainWindow::processMapsJson(QJsonObject *json)
 {
     qDebug() << "Json ready";
 
-    QString timeToWorkVal = json->value("rows").toArray()[0].toObject()["elements"].toArray()[0].toObject()["duration"].toObject()["text"].toString();
+    QString timeToWorkVal = "5 min";//json->value("rows").toArray()[0].toObject()["elements"].toArray()[0].toObject()["duration"].toObject()["text"].toString();
 
     qDebug() << timeToWorkVal;
 
