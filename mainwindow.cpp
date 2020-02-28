@@ -29,6 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(httpManager, SIGNAL(MemeLinkJsonReady(QJsonObject *)),
             this, SLOT(processMemeLinkJson(QJsonObject *)));
+
+    connect(httpManager, SIGNAL(MapsJsonReady(QJsonObject *)),
+            this, SLOT(processMapsJson(QJsonObject *)));
 }
 
 MainWindow::~MainWindow()
@@ -152,6 +155,41 @@ void MainWindow::processMemeLinkJson(QJsonObject *json)
 
 }
 
+void MainWindow::processMapsJson(QJsonObject *json)
+{
+    qDebug() << "Json ready";
+
+    QString timeToWorkVal = json->value("rows").toArray()[0].toObject()["elements"].toArray()[0].toObject()["duration"].toObject()["text"].toString();
+
+    qDebug() << timeToWorkVal;
+
+
+    ui->timeToWorkDisVal->setText(timeToWorkVal);
+
+//    {
+//       "destination_addresses" : [ "Seattle, WA 98119, USA" ],
+//       "origin_addresses" : [ "Lynnwood, WA 98037, USA" ],
+//       "rows" : [
+//          {
+//             "elements" : [
+//                {
+//                   "distance" : {
+//                      "text" : "27.2 km",
+//                      "value" : 27174
+//                   },
+//                   "duration" : {
+//                      "text" : "30 mins",
+//                      "value" : 1803
+//                   },
+//                   "status" : "OK"
+//                }
+//             ]
+//          }
+//       ],
+//       "status" : "OK"
+//    }
+
+}
 
 
 void MainWindow::on_stockDown_clicked()
@@ -167,4 +205,11 @@ void MainWindow::on_stockDown_clicked()
 void MainWindow::on_imgDown_clicked()
 {
     httpManager->sendMemeLinkRequest();
+}
+
+void MainWindow::on_mapUpdate_clicked()
+{
+
+    httpManager->mapsRequest("98037", "98119");
+
 }

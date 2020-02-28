@@ -74,8 +74,8 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>1100</x>
-      <y>10</y>
+      <x>1040</x>
+      <y>90</y>
       <width>90</width>
       <height>90</height>
      </rect>
@@ -200,6 +200,45 @@ border-radius: 45px;</string>
      <rect>
       <x>300</x>
       <y>220</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="timeToWorkDis">
+    <property name="geometry">
+     <rect>
+      <x>1000</x>
+      <y>720</y>
+      <width>101</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Time to Work</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="timeToWorkDisVal">
+    <property name="geometry">
+     <rect>
+      <x>1100</x>
+      <y>730</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="mapUpdate">
+    <property name="geometry">
+     <rect>
+      <x>960</x>
+      <y>710</y>
       <width>89</width>
       <height>25</height>
      </rect>

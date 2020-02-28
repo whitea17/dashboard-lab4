@@ -25,6 +25,7 @@ private slots:
       void processStockJson(QJsonObject *json);
       void processStockTwoJson(QJsonObject *json);
       void processMemeLinkJson(QJsonObject *json);
+      void processMapsJson(QJsonObject *json);
 
 //    void on_imageDownloadButton_clicked();
 //    void on_stockDownloadButton_clicked();
@@ -32,6 +33,8 @@ private slots:
     void on_stockDown_clicked();
 
     void on_imgDown_clicked();
+
+    void on_mapUpdate_clicked();
 
 private:
     Ui::MainWindow *ui;

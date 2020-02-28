@@ -8,7 +8,8 @@ HTTPManager::HTTPManager(QObject *parent) :
     imageDownloadManager(new QNetworkAccessManager),
     stockAPIManager(new QNetworkAccessManager),
     stockTwoAPIManager(new QNetworkAccessManager),
-    memeLinkAPIManager(new QNetworkAccessManager)
+    memeLinkAPIManager(new QNetworkAccessManager),
+    mapsAPIManager(new QNetworkAccessManager)
 
 {
     connect(imageDownloadManager, SIGNAL(finished(QNetworkReply*)),
@@ -22,6 +23,10 @@ HTTPManager::HTTPManager(QObject *parent) :
 
     connect(memeLinkAPIManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(MemeLinkDownloadedHandler(QNetworkReply*)));
+
+    connect(mapsAPIManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(MapsDownloadedHandler(QNetworkReply*)));
+
 }
 
 HTTPManager::~HTTPManager()
@@ -30,6 +35,7 @@ HTTPManager::~HTTPManager()
     delete stockAPIManager;
     delete stockTwoAPIManager;
     delete memeLinkAPIManager;
+    delete mapsAPIManager;
 
 
 }
@@ -81,6 +87,17 @@ void HTTPManager::sendMemeLinkRequest()
 
     request.setUrl(QUrl(address));
     memeLinkAPIManager->get(request);
+    qDebug() << "Stock Request Sent to Address " << request.url();
+}
+
+void HTTPManager::mapsRequest(QString fromZip, QString toZip)
+{
+    QNetworkRequest request;
+
+    QString address = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + fromZip + "&destinations=" + toZip + "&key=" + SECRETS.MAP_API_KEY;
+
+    request.setUrl(QUrl(address));
+    mapsAPIManager->get(request);
     qDebug() << "Stock Request Sent to Address " << request.url();
 }
 
@@ -156,4 +173,23 @@ void HTTPManager::MemeLinkDownloadedHandler(QNetworkReply *reply)
     QJsonObject *jsonObj = new QJsonObject(jsonResponse.object());
 
     emit MemeLinkJsonReady(jsonObj);
+}
+
+void HTTPManager::MapsDownloadedHandler(QNetworkReply *reply)
+{
+    qDebug() << "Stock Reply has arrived";
+    if (reply->error()) {
+        qDebug() << reply->errorString();
+        return;
+    }
+
+    qDebug() << "Download was successful";
+
+    QString answer = reply->readAll();
+    reply->deleteLater();
+
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(answer.toUtf8());
+    QJsonObject *jsonObj = new QJsonObject(jsonResponse.object());
+
+    emit MapsJsonReady(jsonObj);
 }
