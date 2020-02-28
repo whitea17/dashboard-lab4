@@ -23,6 +23,7 @@ private slots:
 //    void setCurrentTime();
 //    void processImage(QPixmap *);
       void processStockJson(QJsonObject *json);
+      void processStockTwoJson(QJsonObject *json);
 
 //    void on_imageDownloadButton_clicked();
 //    void on_stockDownloadButton_clicked();

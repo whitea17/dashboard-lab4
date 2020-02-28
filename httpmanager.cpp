@@ -6,19 +6,26 @@
 HTTPManager::HTTPManager(QObject *parent) :
     QObject(parent),
     imageDownloadManager(new QNetworkAccessManager),
-    stockAPIManager(new QNetworkAccessManager)
+    stockAPIManager(new QNetworkAccessManager),
+    stockTwoAPIManager(new QNetworkAccessManager)
+
 {
     connect(imageDownloadManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(ImageDownloadedHandler(QNetworkReply*)));
 
     connect(stockAPIManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(StockDownloadedHandler(QNetworkReply*)));
+
+    connect(stockTwoAPIManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(StockTwoDownloadedHandler(QNetworkReply*)));
 }
 
 HTTPManager::~HTTPManager()
 {
     delete imageDownloadManager;
     delete stockAPIManager;
+    delete stockTwoAPIManager;
+
 }
 
 void HTTPManager::sendImageRequest(QString zip)
@@ -45,6 +52,20 @@ void HTTPManager::sendStockRequest(QString SymOne)
 
     request.setUrl(QUrl(address));
     stockAPIManager->get(request);
+    qDebug() << "Stock Request Sent to Address " << request.url();
+}
+
+void HTTPManager::sendStockRequestTwo(QString SymOne)
+{
+    QNetworkRequest request;
+
+    QString address = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol="
+            + SymOne
+            + "&apikey="
+            + SECRETS.STOCK_API_KEY;
+
+    request.setUrl(QUrl(address));
+    stockTwoAPIManager->get(request);
     qDebug() << "Stock Request Sent to Address " << request.url();
 }
 
@@ -81,4 +102,24 @@ void HTTPManager::StockDownloadedHandler(QNetworkReply *reply)
     QJsonObject *jsonObj = new QJsonObject(jsonResponse.object());
 
     emit StockJsonReady(jsonObj);
+}
+
+
+void HTTPManager::StockTwoDownloadedHandler(QNetworkReply *reply)
+{
+    qDebug() << "Stock Reply has arrived";
+    if (reply->error()) {
+        qDebug() << reply->errorString();
+        return;
+    }
+
+    qDebug() << "Download was successful";
+
+    QString answer = reply->readAll();
+    reply->deleteLater();
+
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(answer.toUtf8());
+    QJsonObject *jsonObj = new QJsonObject(jsonResponse.object());
+
+    emit StockTwoJsonReady(jsonObj);
 }

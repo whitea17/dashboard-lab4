@@ -104,7 +104,7 @@ border-radius: 45px;</string>
    <widget class="QLabel" name="stockPrice1">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>450</x>
       <y>730</y>
       <width>67</width>
       <height>17</height>
@@ -117,7 +117,7 @@ border-radius: 45px;</string>
    <widget class="QLabel" name="stockPercent1">
     <property name="geometry">
      <rect>
-      <x>540</x>
+      <x>530</x>
       <y>730</y>
       <width>67</width>
       <height>17</height>
@@ -130,14 +130,53 @@ border-radius: 45px;</string>
    <widget class="QPushButton" name="stockDown">
     <property name="geometry">
      <rect>
-      <x>770</x>
-      <y>710</y>
+      <x>860</x>
+      <y>720</y>
       <width>89</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Refresh</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="stockSym1_2">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>710</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="stockPercent1_2">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>730</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="stockPrice1_2">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>730</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
     </property>
    </widget>
   </widget>
