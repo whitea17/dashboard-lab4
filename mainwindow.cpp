@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(httpManager, SIGNAL(PushBulletJsonReady(QJsonObject *)),
             this, SLOT(processPushBulletJson(QJsonObject *)));
+    on_refreshButton_clicked();
 }
 
 MainWindow::~MainWindow()
@@ -200,6 +201,7 @@ void MainWindow::processPushBulletJson(QJsonObject *json)
 
 
     qDebug() << json;
+    ui->pushBullMsg->clear();
 
 
 //    {
@@ -224,29 +226,22 @@ void MainWindow::processPushBulletJson(QJsonObject *json)
 }
 
 
-void MainWindow::on_stockDown_clicked()
-{
-    QString sym = "MSFT";
-
-    qDebug() << sym;
-    httpManager->sendStockRequest(sym);
-    httpManager->sendStockRequestTwo("NVDA");
-
-}
-
-void MainWindow::on_imgDown_clicked()
-{
-    httpManager->sendMemeLinkRequest();
-}
-
-void MainWindow::on_mapUpdate_clicked()
-{
-
-    httpManager->mapsRequest("98037", "98119");
-
-}
-
 void MainWindow::on_pushBullSendButton_clicked()
 {
     httpManager->sendPushBulletRequest(ui->pushBullMsg->text());
+}
+
+void MainWindow::on_refreshButton_clicked()
+{
+    // Time to work
+    httpManager->mapsRequest("98037", "98119");
+
+    // Meme
+    httpManager->sendMemeLinkRequest();
+
+    // Stocks
+    httpManager->sendStockRequest("MSFT");
+    httpManager->sendStockRequestTwo("NVDA");
+
+
 }

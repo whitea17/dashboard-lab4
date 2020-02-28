@@ -28,11 +28,10 @@ private slots:
     void processMapsJson(QJsonObject *json);
     void processPushBulletJson(QJsonObject *json);
 
-    void on_stockDown_clicked();
-    void on_imgDown_clicked();
-    void on_mapUpdate_clicked();
 
     void on_pushBullSendButton_clicked();
+
+    void on_refreshButton_clicked();
 
 private:
     Ui::MainWindow *ui;
