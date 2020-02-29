@@ -168,7 +168,7 @@ void MainWindow::processMapsJson(QJsonObject *json)
 {
     qDebug() << "Json ready";
 
-    QString timeToWorkVal = "5 min";//json->value("rows").toArray()[0].toObject()["elements"].toArray()[0].toObject()["duration"].toObject()["text"].toString();
+    QString timeToWorkVal = json->value("rows").toArray()[0].toObject()["elements"].toArray()[0].toObject()["duration"].toObject()["text"].toString();
 
     qDebug() << timeToWorkVal;
 
