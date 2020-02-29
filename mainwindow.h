@@ -34,6 +34,8 @@ private slots:
 
     void on_refreshButton_clicked();
 
+    void on_pushBullMsg_returnPressed();
+
 private:
     Ui::MainWindow *ui;
     QTimer *timer;

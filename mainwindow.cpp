@@ -275,3 +275,8 @@ void MainWindow::on_refreshButton_clicked()
 
 
 }
+
+void MainWindow::on_pushBullMsg_returnPressed()
+{
+    on_pushBullSendButton_clicked();
+}
