@@ -20,7 +20,7 @@ public:
     ~MainWindow();
 
 private slots:
-//    void setCurrentTime();
+    void setCurrentTime();
     void processImage(QPixmap *);
     void processStockJson(QJsonObject *json);
     void processStockTwoJson(QJsonObject *json);

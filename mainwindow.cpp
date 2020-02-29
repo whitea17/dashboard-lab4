@@ -15,8 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer, SIGNAL(timeout()),
             this, SLOT(setCurrentTime()));
 
-//    setCurrentTime();
-//    timer->start(1000);
+    setCurrentTime();
+    timer->start(1000);
 
     connect(httpManager, SIGNAL(ImageReady(QPixmap *)),
             this, SLOT(processImage(QPixmap *)));
@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(httpManager, SIGNAL(PushBulletJsonReady(QJsonObject *)),
             this, SLOT(processPushBulletJson(QJsonObject *)));
+
     on_refreshButton_clicked();
 }
 
@@ -43,17 +44,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//void MainWindow::setCurrentTime()
-//{
-//    QTime time = QTime::currentTime();
-//    QString hour = time.toString("hh");
-//    QString minute = time.toString("mm");
-//    QString second = time.toString("ss");
+void MainWindow::setCurrentTime()
+{
+    QTime time = QTime::currentTime();
+    QString hour = time.toString("hh");
+    QString minute = time.toString("mm");
+    QString second = time.toString("ss");
 
-//    ui->hourLCD->display(hour);
-//    ui->minuteLCD->display(hour);
-//    ui->secondLCD->display(second);
-//}
+    ui->hourLCD->display(hour);
+    ui->minuteLCD->display(minute);
+    ui->secondLCD->display(second);
+}
 
 void MainWindow::processImage(QPixmap *image)
 {
@@ -77,7 +78,7 @@ void MainWindow::processStockJson(QJsonObject *json)
     ui->stockPrice1->setText("$ " + stockPrice);
     ui->stockPercent1->setText(stockPercentChange);
 
-    if(stockPercentChange.startsWith("-")){
+    if(stockPercentChange.length() > 0 && stockPercentChange.startsWith("-")){
         ui->stockPercent1->setStyleSheet("color: red;");
         ui->stockPrice1->setStyleSheet("color: red;");
     }else{
@@ -119,7 +120,7 @@ void MainWindow::processStockTwoJson(QJsonObject *json)
     ui->stockPrice1_2->setText("$ " + stockPrice);
     ui->stockPercent1_2->setText(stockPercentChange);
 
-    if(stockPercentChange.startsWith("-")){
+    if(stockPercentChange.length() > 0 && stockPercentChange.startsWith("-")){
         ui->stockPercent1_2->setStyleSheet("color: red;");
         ui->stockPrice1_2->setStyleSheet("color: red;");
     }else{
@@ -163,7 +164,7 @@ void MainWindow::processMapsJson(QJsonObject *json)
 {
     qDebug() << "Json ready";
 
-    QString timeToWorkVal = json->value("rows").toArray()[0].toObject()["elements"].toArray()[0].toObject()["duration"].toObject()["text"].toString();
+    QString timeToWorkVal = "5 min";//json->value("rows").toArray()[0].toObject()["elements"].toArray()[0].toObject()["duration"].toObject()["text"].toString();
 
     qDebug() << timeToWorkVal;
 
