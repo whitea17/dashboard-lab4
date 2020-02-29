@@ -38,7 +38,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(httpManager, SIGNAL(NewsJsonReady(QJsonObject *)),
             this, SLOT(processNewsJson(QJsonObject *)));
-    //on_refreshButton_clicked();
+			
+    on_refreshButton_clicked();
+
 }
 
 MainWindow::~MainWindow()
