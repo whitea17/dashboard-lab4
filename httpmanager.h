@@ -20,7 +20,7 @@ public:
     void sendMemeLinkRequest();
     void mapsRequest(QString fromZip, QString toZips);
     void sendPushBulletRequest(QString data);
-    void sendNewsRequest(QString url);
+    void sendNewsRequest();
 
     const SensitiveInfoHandler SECRETS = SensitiveInfoHandler();
 

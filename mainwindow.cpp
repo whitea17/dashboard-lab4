@@ -35,6 +35,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(httpManager, SIGNAL(PushBulletJsonReady(QJsonObject *)),
             this, SLOT(processPushBulletJson(QJsonObject *)));
+
+    connect(httpManager, SIGNAL(NewsJsonReady(QJsonObject *)),
+            this, SLOT(processNewsJson(QJsonObject *)));
     //on_refreshButton_clicked();
 }
 
@@ -225,6 +228,28 @@ void MainWindow::processPushBulletJson(QJsonObject *json)
 
 }
 
+void MainWindow::processNewsJson(QJsonObject *json)
+{
+    qDebug() << "Json ready";
+    QString news1 = json->value("articles").toArray()[0].toObject()["title"].toString();
+    QString news2 = json->value("articles").toArray()[1].toObject()["title"].toString();
+    QString news3 = json->value("articles").toArray()[2].toObject()["title"].toString();
+    QString news4 = json->value("articles").toArray()[3].toObject()["title"].toString();
+
+    ui -> newsBox1 -> setText(news1);
+    ui -> newsBox2 -> setText(news2);
+    ui -> newsBox3 -> setText(news3);
+    ui -> newsBox4 -> setText(news4);
+
+    qDebug() << news1;
+    qDebug() << news2;
+    qDebug() << news3;
+    qDebug() << news4;
+//    QString newsUrl = json->value("articles").toArray()[0].toObject()["url"].toString();
+//    QString newsDesc = json->value("articles").toArray()[0].toObject()["description"].toString();
+//    QString newsImage = json->value("articles").toArray()[0].toObject()["urlToImage"].toString();
+}
+
 
 void MainWindow::on_pushBullSendButton_clicked()
 {
@@ -242,6 +267,9 @@ void MainWindow::on_refreshButton_clicked()
     // Stocks
     httpManager->sendStockRequest("MSFT");
     httpManager->sendStockRequestTwo("NVDA");
+
+    // News
+    httpManager -> sendNewsRequest();
 
 
 }

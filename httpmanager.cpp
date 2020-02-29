@@ -33,6 +33,9 @@ HTTPManager::HTTPManager(QObject *parent) :
     connect(pushBulletAPIManager, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(PushBulletDownloadedHandler(QNetworkReply*)));
 
+    connect(newsAPIManager, SIGNAL(finished(QNetworkReply*)),
+            this, SLOT(NewsDownloadedHandler(QNetworkReply*)));
+
 }
 
 HTTPManager::~HTTPManager()
@@ -136,11 +139,12 @@ void HTTPManager::sendPushBulletRequest(QString data)
     qDebug() << "PushBullet Request Sent to Address " << request.url();
 }
 
-void HTTPManager::sendNewsRequest(QString url)
+void HTTPManager::sendNewsRequest()
 {
     QNetworkRequest request;
 
-    QString address = "http://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=01d73b6fd9d645a1bc7f14191bddbe72";
+    QString address = "http://newsapi.org/v2/top-headlines?country=us&apiKey="
+            + SECRETS.NEWS_API_KEY;
 
     request.setUrl(QUrl(address));
     newsAPIManager -> get(request);
@@ -269,4 +273,12 @@ void HTTPManager::NewsDownloadedHandler(QNetworkReply *reply)
     }
 
     qDebug() << "Download was successful";
+
+    QString answer = reply -> readAll();
+    reply -> deleteLater();
+
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(answer.toUtf8());
+    QJsonObject *jsonObj = new QJsonObject(jsonResponse.object());
+
+    emit NewsJsonReady(jsonObj);
 }

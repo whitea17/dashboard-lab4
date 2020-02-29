@@ -27,6 +27,7 @@ private slots:
     void processMemeLinkJson(QJsonObject *json);
     void processMapsJson(QJsonObject *json);
     void processPushBulletJson(QJsonObject *json);
+    void processNewsJson(QJsonObject *json);
 
 
     void on_pushBullSendButton_clicked();
