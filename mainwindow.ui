@@ -237,6 +237,54 @@ border-radius: 45px;</string>
      <string>Send</string>
     </property>
    </widget>
+   <widget class="QLCDNumber" name="secondLCD">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>50</y>
+      <width>100</width>
+      <height>100</height>
+     </rect>
+    </property>
+    <property name="digitCount">
+     <number>2</number>
+    </property>
+    <property name="value" stdset="0">
+     <double>88.000000000000000</double>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="minuteLCD">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>50</y>
+      <width>100</width>
+      <height>100</height>
+     </rect>
+    </property>
+    <property name="digitCount">
+     <number>2</number>
+    </property>
+    <property name="value" stdset="0">
+     <double>88.000000000000000</double>
+    </property>
+   </widget>
+   <widget class="QLCDNumber" name="hourLCD">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>50</y>
+      <width>100</width>
+      <height>100</height>
+     </rect>
+    </property>
+    <property name="digitCount">
+     <number>2</number>
+    </property>
+    <property name="value" stdset="0">
+     <double>88.000000000000000</double>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -244,7 +292,7 @@ border-radius: 45px;</string>
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>22</height>
+     <height>30</height>
     </rect>
    </property>
   </widget>
